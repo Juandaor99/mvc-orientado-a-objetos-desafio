@@ -1,4 +1,6 @@
 import test from "ava";
+import fs from "fs";
+import path from "path";
 import { ContactsController } from "./controllers";
 
 test("Testeo el constructor del controller", (t) => {
@@ -27,13 +29,18 @@ test("Testeo el método processOptions", (t) => {
   });
 
   t.is(PruebaGet2, controladorPrueba.contacts.data);
+
   //Prueba Action Save
   controladorPrueba.processOptions({
     action: "save",
     params: { id: 5, name: "Juan David" },
   });
-  t.is(controladorPrueba.contacts.data[4]?.id, 5);
-  t.is(controladorPrueba.contacts.data[4]?.name, "Juan David");
+
+  const encontrado = controladorPrueba.contacts.data.find(
+    (contact) => contact.id === 5
+  );
+  t.is(encontrado?.id, 5);
+  t.is(encontrado?.name, "Juan David");
 
   //Prueba Action Null
   const PruebaNull = controladorPrueba.processOptions({
